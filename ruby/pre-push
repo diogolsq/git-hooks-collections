@@ -62,7 +62,7 @@ done
 echo "saving diff to files..."
 DIFF_CONTENT=$(git diff master)
 
-PROMPT="Can you evaluate this code difference for readability, code smells, refactor hints, and SOLID principles?\n\n"
+PROMPT="Can you evaluate this code difference for readability, code smells, refactor hints, opportunities to apply specific design patterns and  SOLID principles?\n\n"
 
 # Split the DIFF_CONTENT into chunks of 6000 characters and save to files
 count=1
