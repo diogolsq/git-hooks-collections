@@ -33,6 +33,7 @@ files=$(git diff master --name-only --diff-filter=d)
 echo "linting..."
 for file in $files; do
     if [[ "$file" =~ \.rb$ ]]; then
+        echo "Running linter for $file" 
         rubocop_result=$(bundle exec rubocop "$file")
         rubocop_exit_code=$?
         if [ $rubocop_exit_code -ne 0 ]; then

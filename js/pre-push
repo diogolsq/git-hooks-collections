@@ -24,6 +24,7 @@ files=$(git diff master --name-only --diff-filter=d)
 echo "linting..."
 for file in $files; do
     if [[ "$file" =~ \.js$ ]]; then
+        echo "Running linter for $file" 
         eslint_result=$(eslint "$file")
         eslint_exit_code=$?
         if [ $eslint_exit_code -ne 0 ]; then

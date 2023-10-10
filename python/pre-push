@@ -25,6 +25,7 @@ files=$(git diff master --name-only --diff-filter=d)
 echo "Linting with flake8..."
 for file in $files; do
     if [[ "$file" =~ \.py$ ]]; then
+        echo "Running linter for $file" 
         flake8_result=$(flake8 "$file")
         flake8_exit_code=$?
         if [ $flake8_exit_code -ne 0 ]; then
