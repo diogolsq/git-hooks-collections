@@ -4,6 +4,7 @@ if [ "$SKIP_HOOKS" == "true" ] || git config --get hooks.skipchecks | grep -q 't
     exit 0
 fi
 
+# checking for dependecies
 if ! command -v eslint &> /dev/null; then
     echo "eslint not found! Installing..."
     npm install -g eslint
@@ -22,6 +23,11 @@ if ! command -v cr &> /dev/null; then
 fi
 
 
+if ! command -v stylelint &> /dev/null; then
+    echo "stylelint not found! Installing..."
+    npm install -g stylelint
+fi
+
 echo "Running pre-push check..."
 
 # Get the list of changed files
@@ -31,6 +37,8 @@ echo "linting... $files"
 for file in $files; do
     if [[ "$file" =~ \.js$ ]]; then
         echo "Running ESLint for $file"
+        eslint --fix "$file"
+
         eslint_result=$(eslint "$file")
         eslint_exit_code=$?
         if [ $eslint_exit_code -ne 0 ]; then
@@ -40,6 +48,8 @@ for file in $files; do
         fi
     elif [[ "$file" =~ \.ts$ ]]; then
         echo "Running TSLint for $file"
+        tslint --fix "$file"
+
         tslint_result=$(tslint "$file")
         tslint_exit_code=$?
         if [ $tslint_exit_code -ne 0 ]; then
@@ -47,7 +57,20 @@ for file in $files; do
             echo "$tslint_result"
             exit 1
         fi
+    elif [[ "$file" =~ \.scss$ ]] || [[ "$file" =~ \.css$ ]]; then
+        echo "Running stylelint for $file"
+        stylelint "$file" --fix
+
+        stylelint_result=$(stylelint "$file")
+        stylelint_exit_code=$?
+        if [ $stylelint_exit_code -ne 0 ]; then
+            echo "stylelint failed for $file:"
+            echo "$stylelint_result"
+            exit 1
+        fi
     fi
+
+    
 
     # Using cr to get the complexity report (assuming you want it for both .js and .ts files)
     if [[ "$file" =~ \.js$ ]] || [[ "$file" =~ \.ts$ ]]; then
