@@ -5,10 +5,10 @@ if [ "$SKIP_HOOKS" == "true" ] || git config --get hooks.skipchecks | grep -q 't
     exit 0
 fi
 
-# Check if flake8 is installed
-if ! pip list | grep -q flake8; then
-    echo "flake8 not found! Installing..."
-    pip install flake8
+# Check if ruff is installed
+if ! pip list | grep -q ruff; then
+    echo "ruff not found! Installing..."
+    pip install ruff
 fi
 
 # Check if radon is installed
@@ -22,15 +22,15 @@ echo "Running pre-push check..."
 # Get the list of changed files
 files=$(git diff master --name-only --diff-filter=d)
 
-echo "Linting with flake8... $files"
+echo "Linting with ruff... $files"
 for file in $files; do
     if [[ "$file" =~ \.py$ ]]; then
         echo "Running linter for $file" 
-        flake8_result=$(flake8 "$file")
-        flake8_exit_code=$?
-        if [ $flake8_exit_code -ne 0 ]; then
-            echo "Flake8 linting failed for $file:"
-            echo "$flake8_result"
+        ruff_result=$(ruff check "$file")
+        ruff_exit_code=$?
+        if [ $ruff_exit_code -ne 0 ]; then
+            echo "Ruff linting failed for $file:"
+            echo "$ruff_result"
             exit 1
         fi
         
@@ -48,7 +48,7 @@ done
 echo "saving diff to files..."
 DIFF_CONTENT=$(git diff master)
 
-PROMPT="Can you evaluate this code difference for readability, code smells, refactor hints, opportunities to apply specific design patterns and  SOLID principles?\n\n"
+PROMPT="Can you evaluate differences in this code for readability, code smells, refactor hints, opportunities to apply specific design patterns and SOLID principles?\n\n"
 
 # Split the DIFF_CONTENT into chunks of 3000 characters and save to files
 count=1
