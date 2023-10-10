@@ -1,12 +1,13 @@
 # Git Hooks Collection
 
-This repository contains a collection of git hooks organized by programming language/framework. These hooks help automate various tasks like linting, complexity checks, and evaluating code churn before code is pushed to the repository, also generates temp files that you can send to AI code reviewes or copy and paste into ChatGpt dashboard.
+This repository provides an array of git hooks, categorized by programming language and framework. These hooks streamline a variety of tasks such as linting, assessing code complexity, and gauging code churn prior to pushing code to the repository. Additionally, they produce temporary files suitable for AI code reviews or for pasting directly into the ChatGpt dashboard.
 
-Idea behind is to integrate a CI and code checkers locally, instead of only in actual CI pipeline, such as Circle Ci, github actions etc.
+The core philosophy behind this repository is to bring CI (Continuous Integration) and code quality checks **to your local setup**. While services like CircleCI, GitHub Actions, and others offer these features, having them locally ensures that checks are done even before reaching the actual CI pipeline.
 
-This hooks meant to be pre-push hooks. 
+Please note:
 
-It don't have triggers to test suites, in order to not delay pushs. Also in TDD or a CI pipeline already will be dealing with running multiple tests.
+- These hooks are specifically designed to be **pre-push hooks**.
+- They do not trigger any test suites, ensuring there's no delay in your push operations. This is especially important for workflows that rely heavily on Test-Driven Development (TDD) or have a separate CI pipeline in place to handle extensive testing.
 
 ![Flowchart Ruby](assets/images/flowchart-ruby.png "Flow chart of a ruby repository")
 
