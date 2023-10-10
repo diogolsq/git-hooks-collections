@@ -1,0 +1,51 @@
+#!/bin/sh
+
+echo "Running pre-push check..."
+
+# Get the list of changed files
+files=$(git diff master --name-only --diff-filter=d)
+
+echo "linting..."
+for file in $files; do
+    if [[ "$file" =~ \.js$ ]]; then
+        eslint_result=$(npx eslint "$file")
+        eslint_exit_code=$?
+        if [ $eslint_exit_code -ne 0 ]; then
+            echo "ESLint failed for $file:"
+            echo "$eslint_result"
+            exit 1
+        fi
+        
+        complexity_result=$(cr "$file")
+        complexity_exit_code=$?
+        if [ $complexity_exit_code -ne 0 ]; then
+            echo "Complexity report failed for $file:"
+            echo "$complexity_result"
+            exit 1
+        fi
+    fi
+done
+
+echo "saving diff to files..."
+DIFF_CONTENT=$(git diff master)
+
+PROMPT="Can you evaluate this code difference for readability, code smells, refactor hints, and SOLID principles?\n\n"
+
+# Split the DIFF_CONTENT into chunks of 3000 characters and save to files
+count=1
+while [ -n "$DIFF_CONTENT" ]; do
+    # Grab the first 3000 characters
+    CHUNK="${DIFF_CONTENT:0:6000}"
+
+    # Remove the first 3000 characters from DIFF_CONTENT
+    DIFF_CONTENT="${DIFF_CONTENT:6000}"
+
+    # Write the chunk to a file with the prompt
+    echo -e "$PROMPT$CHUNK" > "pre_push_diff_${count}.txt"
+
+    count=$((count + 1))
+done
+
+echo "Diffs have been saved to multiple files (pre_push_diff_X.txt) with the prompt. Please review each file before pushing."
+
+exit 0
