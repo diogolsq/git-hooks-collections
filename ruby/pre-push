@@ -34,15 +34,16 @@ echo "linting... $files"
 for file in $files; do
     if [[ "$file" =~ \.rb$ ]]; then
         echo "Running linter for $file" 
-        rubocop_result=$(bundle exec rubocop "$file")
+        rubocop_result=$(rubocop "$file")
         rubocop_exit_code=$?
+        rubocop --auto-correct "$file"
         if [ $rubocop_exit_code -ne 0 ]; then
             echo "RuboCop failed for $file:"
             echo "$rubocop_result"
             exit 1
         fi
         
-        reek_result=$(bundle exec reek "$file")
+        reek_result=$(reek "$file")
         reek_exit_code=$?
         if [ $reek_exit_code -ne 0 ]; then
             echo "Reek smells detected for $file:"
