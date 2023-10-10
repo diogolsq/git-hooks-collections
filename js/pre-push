@@ -11,6 +11,18 @@ if ! command -v eslint &> /dev/null; then
     npm init @eslint/config
 fi
 
+
+if ! npm list -g eslint-plugin-css-modules &> /dev/null; then
+    echo "eslint-plugin-css-modules not found! Installing..."
+    npm install -g eslint-plugin-css-modules
+fi
+
+if ! npm list -g eslint-plugin-scss &> /dev/null; then
+    echo "eslint-plugin-scss not found! Installing..."
+    npm install -g eslint-plugin-scss
+fi
+
+
 if ! command -v tslint &> /dev/null; then
     echo "tslint not found! Installing..."
     npm install -g tslint
@@ -33,11 +45,6 @@ if ! command -v cr &> /dev/null; then
 fi
 
 
-if ! command -v stylelint &> /dev/null; then
-    echo "stylelint not found! Installing..."
-    npm install -g stylelint
-    npm init stylelint
-fi
 
 echo "Running pre-push check..."
 
@@ -46,7 +53,7 @@ files=$(git diff master --name-only --diff-filter=d)
 
 echo "linting... $files"
 for file in $files; do
-    if [[ "$file" =~ \.js$ ]]; then
+    if [[ "$file" =~ \.js$ ]] [[ "$file" =~ \.scss$ ]] || [[ "$file" =~ \.css$ ]]; then
         echo "Running ESLint for $file"
         eslint --fix "$file"
 
@@ -66,17 +73,6 @@ for file in $files; do
         if [ $tslint_exit_code -ne 0 ]; then
             echo "TSLint failed for $file:"
             echo "$tslint_result"
-            exit 1
-        fi
-    elif [[ "$file" =~ \.scss$ ]] || [[ "$file" =~ \.css$ ]]; then
-        echo "Running stylelint for $file"
-        stylelint "$file" --fix
-
-        stylelint_result=$(stylelint "$file")
-        stylelint_exit_code=$?
-        if [ $stylelint_exit_code -ne 0 ]; then
-            echo "stylelint failed for $file:"
-            echo "$stylelint_result"
             exit 1
         fi
     fi
