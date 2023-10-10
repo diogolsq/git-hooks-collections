@@ -9,6 +9,12 @@ if ! command -v eslint &> /dev/null; then
     npm install -g eslint
 fi
 
+if ! command -v tslint &> /dev/null; then
+    echo "tslint not found! Installing..."
+    npm install -g tslint
+fi
+
+
 # Check if complexity-report is installed
 if ! command -v cr &> /dev/null; then
     echo "complexity-report not found! Installing..."
@@ -21,10 +27,10 @@ echo "Running pre-push check..."
 # Get the list of changed files
 files=$(git diff master --name-only --diff-filter=d)
 
-echo "linting..."
+echo "linting... $files"
 for file in $files; do
     if [[ "$file" =~ \.js$ ]]; then
-        echo "Running linter for $file" 
+        echo "Running ESLint for $file"
         eslint_result=$(eslint "$file")
         eslint_exit_code=$?
         if [ $eslint_exit_code -ne 0 ]; then
@@ -32,8 +38,19 @@ for file in $files; do
             echo "$eslint_result"
             exit 1
         fi
+    elif [[ "$file" =~ \.ts$ ]]; then
+        echo "Running TSLint for $file"
+        tslint_result=$(tslint "$file")
+        tslint_exit_code=$?
+        if [ $tslint_exit_code -ne 0 ]; then
+            echo "TSLint failed for $file:"
+            echo "$tslint_result"
+            exit 1
+        fi
+    fi
 
-        # Using cr to get the complexity report
+    # Using cr to get the complexity report (assuming you want it for both .js and .ts files)
+    if [[ "$file" =~ \.js$ ]] || [[ "$file" =~ \.ts$ ]]; then
         complexity_result=$(cr -o text "$file")
         complexity_exit_code=$?
         if [ $complexity_exit_code -ne 0 ]; then

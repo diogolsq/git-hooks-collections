@@ -30,7 +30,7 @@ echo "Running pre-push check..."
 # Get the list of changed files
 files=$(git diff master --name-only --diff-filter=d)
 
-echo "linting..."
+echo "linting... $files"
 for file in $files; do
     if [[ "$file" =~ \.rb$ ]]; then
         echo "Running linter for $file" 
