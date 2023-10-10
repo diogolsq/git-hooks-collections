@@ -1,5 +1,8 @@
 #!/bin/sh
-
+if [ "$SKIP_HOOKS" == "true" ] || git config --get hooks.skipchecks | grep -q 'true'; then
+    echo "Bypassing checks."
+    exit 0
+fi
 
 if ! command -v eslint &> /dev/null; then
     echo "eslint not found! Installing..."
@@ -45,7 +48,7 @@ DIFF_CONTENT=$(git diff master)
 
 PROMPT="Can you evaluate this code difference for readability, code smells, refactor hints, and SOLID principles?\n\n"
 
-# Split the DIFF_CONTENT into chunks of 3000 characters and save to files
+# Split the DIFF_CONTENT into chunks of 6000 characters and save to files
 count=1
 while [ -n "$DIFF_CONTENT" ]; do
     # Grab the first 6000 characters

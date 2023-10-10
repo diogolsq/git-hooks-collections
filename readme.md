@@ -14,6 +14,26 @@ This repository contains a collection of git hooks organized by programming lang
     ```
 5. **Each hook script will check for the required dependencies at the beginning. If a dependency is not found, the script will attempt to install it globally. Ensure you have the necessary permissions for this.**
 
+
+## Bypassing Checks
+If you want to bypass the checks provided by the hooks for a specific git command, you can use one of the following methods:
+
+Environment Variable: Set the SKIP_HOOKS environment variable to true before running your git command.
+
+```
+SKIP_HOOKS=true git push
+```
+Git Config: Set a git configuration for skipping hooks. This can be useful if you want to skip hooks for all projects on your machine or a specific project:
+
+```
+# For global config (all projects on the machine)
+git config --global hooks.skipchecks true
+
+# For a specific project
+git config hooks.skipchecks true
+```
+
+
 ## Available Hooks
 
 ### JavaScript
@@ -40,17 +60,17 @@ This repository contains a collection of git hooks organized by programming lang
 [Link to Python Hook](./python/pre-push)
 
 
-C#
+### C#
 Linting: Uses [TBD] to lint changed C# files.
 Complexity: Uses [TBD] to check complexity.
 ##TODO
 
-PHP
+### PHP
 Linting: Uses [TBD] to lint changed PHP files.
 Complexity: Uses [TBD] to check complexity.
 #TODO
 
-Java
+### Java
 Linting: Uses [TBD] to lint changed Java files.
 Complexity: Uses [TBD] to check complexity.
 #TODO

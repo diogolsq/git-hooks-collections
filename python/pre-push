@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [ "$SKIP_HOOKS" == "true" ] || git config --get hooks.skipchecks | grep -q 'true'; then
+    echo "Bypassing checks."
+    exit 0
+fi
 
 # Check if flake8 is installed
 if ! pip list | grep -q flake8; then
@@ -48,10 +52,10 @@ PROMPT="Can you evaluate this Python code difference for readability, code smell
 # Split the DIFF_CONTENT into chunks of 3000 characters and save to files
 count=1
 while [ -n "$DIFF_CONTENT" ]; do
-    # Grab the first 3000 characters
+    # Grab the first 6000 characters
     CHUNK="${DIFF_CONTENT:0:6000}"
 
-    # Remove the first 3000 characters from DIFF_CONTENT
+    # Remove the first 6000 characters from DIFF_CONTENT
     DIFF_CONTENT="${DIFF_CONTENT:6000}"
 
     # Write the chunk to a file with the prompt

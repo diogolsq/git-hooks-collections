@@ -1,5 +1,13 @@
 #!/bin/sh
 
+
+if [ "$SKIP_HOOKS" == "true" ] || git config --get hooks.skipchecks | grep -q 'true'; then
+    echo "Bypassing checks."
+    exit 0
+fi
+
+
+
 if ! gem list rubocop -i > /dev/null; then
     echo "rubocop not found! Installing..."
     gem install rubocop
