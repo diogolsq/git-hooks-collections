@@ -1,5 +1,22 @@
 #!/bin/sh
 
+if ! gem list rubocop -i > /dev/null; then
+    echo "rubocop not found! Installing..."
+    gem install rubocop
+fi
+
+# Check if reek is installed
+if ! gem list reek -i > /dev/null; then
+    echo "reek not found! Installing..."
+    gem install reek
+fi
+
+# Check if flog is installed
+if ! gem list flog -i > /dev/null; then
+    echo "flog not found! Installing..."
+    gem install flog
+fi
+
 echo "Running pre-push check..."
 
 # Get the list of changed files

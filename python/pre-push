@@ -1,5 +1,18 @@
 #!/bin/sh
 
+
+# Check if flake8 is installed
+if ! pip list | grep -q flake8; then
+    echo "flake8 not found! Installing..."
+    pip install flake8
+fi
+
+# Check if radon is installed
+if ! pip list | grep -q radon; then
+    echo "radon not found! Installing..."
+    pip install radon
+fi
+
 echo "Running pre-push check..."
 
 # Get the list of changed files
