@@ -91,6 +91,7 @@ for file in $files; do
     fi
 done
 
+
 echo "saving diff to files..."
 DIFF_CONTENT=$(git diff master)
 
@@ -98,6 +99,8 @@ PROMPT="Can you evaluate this code difference for readability, code smells, refa
 
 # Split the DIFF_CONTENT into chunks of 6000 characters and save to files
 count=1
+mkdir -p pre_push_diffs
+
 while [ -n "$DIFF_CONTENT" ]; do
     # Grab the first 6000 characters
     CHUNK="${DIFF_CONTENT:0:6000}"
@@ -105,12 +108,13 @@ while [ -n "$DIFF_CONTENT" ]; do
     # Remove the first 6000 characters from DIFF_CONTENT
     DIFF_CONTENT="${DIFF_CONTENT:6000}"
 
-    # Write the chunk to a file with the prompt
-    echo -e "$PROMPT$CHUNK" > "pre_push_diff_${count}.txt"
+    # Write the chunk to a file with the prompt within the pre_push_diffs folder
+    echo -e "$PROMPT$CHUNK" > "pre_push_diffs/pre_push_diff_${count}.txt"
 
     count=$((count + 1))
 done
 
-echo "Diffs have been saved to multiple files (pre_push_diff_X.txt) with the prompt. Please review each file before pushing."
+echo "Diffs have been saved to multiple files (pre_push_diffs/pre_push_diff_X.txt) with the prompt. Please review each file before pushing."
+
 
 exit 0
