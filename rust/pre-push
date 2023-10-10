@@ -1,0 +1,40 @@
+# Check if cargo and rustup are installed
+echo "Checking if Rust and Cargo are installed...";
+if ! command -v cargo &> /dev/null || ! command -v rustup &> /dev/null; then
+  echo "Error: Cargo or Rust is not installed."
+  exit 1
+fi
+
+# Check if Rust and Cargo are up-to-date
+rust_version=$(rustc --version | awk '{print $2}')
+echo "Rust version: $rust_version"
+
+# Extract and echo the Cargo version number
+cargo_version=$(cargo --version | awk '{print $2}')
+echo "Cargo version: $cargo_version"
+
+FMT_CHECK_CMD="cargo fmt --all -- --check"
+FMT_CMD="cargo fmt --all"
+CLIPPY_CMD="cargo clippy"
+
+# Run the commands
+echo "Running $FMT_CHECK_CMD..."
+$FMT_CHECK_CMD
+fmt_check_status=$?
+
+echo "Running $FMT_CMD..."
+$FMT_CMD
+fmt_status=$?
+
+echo "Running $CLIPPY_CMD..."
+$CLIPPY_CMD
+clippy_status=$?
+
+# Check the exit status of the commands
+if [ $fmt_check_status -ne 0 ] || [ $fmt_status -ne 0 ] || [ $clippy_status -ne 0 ]; then
+  echo "Pre-push checks failed. Aborting push."
+  exit 1
+fi
+
+# If all checks pass, allow the push
+exit 0
