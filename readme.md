@@ -7,6 +7,10 @@ Idea behind is to integrate a CI and code checkers locally, instead of only in a
 This hooks meant to be pre-push hooks. 
 
 It don't have triggers to test suites, in order to not delay pushs. Also in TDD or a CI pipeline already will be dealing with running multiple tests.
+
+![Flowchart Ruby](assets/images/flowchart-ruby.png "Flow chart of a ruby repository")
+
+
 ## Usage
 
 1. Navigate to the directory of your git project.
