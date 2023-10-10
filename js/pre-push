@@ -8,11 +8,20 @@ fi
 if ! command -v eslint &> /dev/null; then
     echo "eslint not found! Installing..."
     npm install -g eslint
+    npm init @eslint/config
 fi
 
 if ! command -v tslint &> /dev/null; then
     echo "tslint not found! Installing..."
     npm install -g tslint
+    echo "Setting up default configuration..."
+    echo '{
+        "extends": "tslint:recommended",
+        "rules": {
+        // Add or modify rules here
+        }
+    }' > tslint.json
+
 fi
 
 
@@ -20,12 +29,14 @@ fi
 if ! command -v cr &> /dev/null; then
     echo "complexity-report not found! Installing..."
     npm install -g complexity-report
+
 fi
 
 
 if ! command -v stylelint &> /dev/null; then
     echo "stylelint not found! Installing..."
     npm install -g stylelint
+    npm init stylelint
 fi
 
 echo "Running pre-push check..."
