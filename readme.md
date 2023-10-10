@@ -39,6 +39,21 @@ This repository contains a collection of git hooks organized by programming lang
 
 [Link to Python Hook](./python/pre-push)
 
+
+C#
+Linting: Uses [TBD] to lint changed C# files.
+Complexity: Uses [TBD] to check complexity.
+##TODO
+
+PHP
+Linting: Uses [TBD] to lint changed PHP files.
+Complexity: Uses [TBD] to check complexity.
+#TODO
+
+Java
+Linting: Uses [TBD] to lint changed Java files.
+Complexity: Uses [TBD] to check complexity.
+#TODO
 ## Churn Evaluation
 
 Churn evaluation provides insight into how frequently files are being changed, which could indicate areas of instability or frequent adjustments in the codebase. High churn files may benefit from further refactoring or architectural changes.
