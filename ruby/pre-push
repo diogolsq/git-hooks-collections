@@ -89,6 +89,6 @@ while [ -n "$DIFF_CONTENT" ]; do
     count=$((count + 1))
 done
 
-echo "Diffs have been saved to multiple files (pre_push_diffs/pre_push_diff_X.txt) with the prompt. Please review each file before pushing."
+echo "Diffs have been saved to multiple files (pre_push_diffs/pre_push_diff_X.txt) with the prompt. You can prompt AI chatbots to review your code diffs."
 
 exit 0
