@@ -52,12 +52,18 @@ for file in $files; do
         fi
         
         flog_result=$(flog "$file")
-        # Adjust this based on a threshold you consider "complex"
-        if [[ $(echo "$flog_result" | head -1 | awk '{print $2}') > 20 ]]; then
+
+        flog_value=$(echo "$flog_result" | awk 'NR==1 {print int($1)}')
+        echo "Extracted flog value: $flog_value"
+
+        # Adjust this based on a threshold you consider "complex", right now it need to be smaller than 100
+        if [[ $flog_value -gt 100 ]]; then
             echo "Flog complexity too high for $file:"
             echo "$flog_result"
             exit 1
         fi
+        echo "Flog complexity for $file:"
+        echo "$flog_result"
     fi
 done
 

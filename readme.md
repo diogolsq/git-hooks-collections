@@ -1,6 +1,6 @@
 # Git Hooks Collection
 
-This repository provides an array of git hooks, categorized by programming language and framework. These hooks streamline a variety of tasks such as linting, assessing code complexity, and gauging code churn prior to pushing code to the repository. Additionally, they produce temporary files suitable for AI code reviews or for pasting directly into the ChatGpt dashboard.
+This repository offers a collection of git hook boilerplates, categorized by programming language. These hooks streamline a variety of tasks such as linting, assessing code complexity, and gauging code churn prior to pushing code to the repository. Additionally, they produce temporary files suitable for AI code reviews or for pasting directly into the ChatGpt dashboard.
 
 The core philosophy behind this repository is to bring CI (Continuous Integration) and code quality checks **to your local setup**. While services like CircleCI, GitHub Actions, and others offer these features, having them locally ensures that checks are done even before reaching the actual CI pipeline.
 
@@ -11,6 +11,15 @@ Please note:
 
 ![Flowchart Ruby](assets/images/flowchart-ruby.png "Flow chart of a ruby repository")
 
+
+## Customization and Adjustments
+While these hooks serve as boilerplates and are ready for immediate use, you might need to tailor them to your project's specifics:
+
+- Linter Selection: Depending on your project's needs, you might want to swap out or configure the linters specified in the hook scripts.
+
+- Dependency Management: The scripts check for and may attempt to install missing dependencies. Ensure you review and adjust this behavior as needed for your setup.
+
+### the overall behavior is to call linter --fix in the diff files, whenever the linter provides this option, if you don't want this behavior remove the according lines of your pre-push.sh
 
 ## Usage
 
@@ -50,7 +59,7 @@ git config hooks.skipchecks true
 
 ### JavaScript
 
-- **Linting**: Uses ESLint to lint changed JS files.
+- **Linting**: Uses ESLint to lint changed JS and css/scss files, tslint for TS files.
 - **Complexity**: Uses complexity-report to check complexity.
 
 [Link to JS Hook](./js/pre-push)
